@@ -159,6 +159,17 @@ The instance has `Apache2`, `Python3`, `mod_wsgi` library for Apache to support 
     ```properties
     grader ALL=(ALL) ALL
     ```
+23. Get a Private Key for `grader`:
+    * from local machine run `ssh-keygen`
+    * Use passphrase _'udacity'_
+    * Save file as `grader`.
+    * run `cat grader.pub`
+    * sign in to the instance as `grader`
+    * create `.ssh` directory.
+    * run `chmod 700 .ssh`
+    * create file `.ssh/authorized_keys`
+    * Enter the content of `grader.pub` inside it
+    * run `chmod 644 .ssh/authorized_keys`
 23. Disable root login & disable password login.
     ```shell
     $ sudo nano /etc/ssh/sshd_config
