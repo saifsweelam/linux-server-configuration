@@ -138,4 +138,58 @@ The instance has `Apache2`, `Python3`, `mod_wsgi` library for Apache to support 
     $ sudo a2ensite catalog
     $ sudo service apache restart
     ```
-18. Visit website at [3.123.4.195](3.123.4.195)
+18. Visit website at [3.123.4.195](http://ec2-3-123-4-195.eu-central-1.compute.amazonaws.com/) and make sure it works.
+19. Set timezone to UTC
+    ```shell
+    $ sudo dpkg-reconfigure tzdata
+    ```
+20. Sync time using `ntp` which is already installed.
+    ```shell
+    $ sudo nano /etc/ntp.conf
+    ```
+21. Create a new user named `grader` and set password: **'udacity'**
+    ```shell
+    $ sudo adduser grader
+    ```
+22. Give `grader` sudo premission.
+    ```shell
+    $ sudo nano /etc/sudoers.d/grader
+    ```
+    And enter
+    ```properties
+    grader ALL=(ALL) ALL
+    ```
+23. Disable root login & disable password login.
+    ```shell
+    $ sudo nano /etc/ssh/sshd_config
+    ```
+    Edit `PermitRootLogin prohibt-password` to `PermitRootLogin no`
+    And edit `PasswordAuthentication yes` to `PasswordAuthentication no`
+24. Change SSH port from the same file:
+    *You should first allow port 2200 from aws firewall*
+    ```properties
+    Port 22 -->> Port 2200
+    ```
+25. Save file and restart SSH
+    ```shell
+    $ sudo service ssh restart
+    ```
+26. Set Up `UFW` firewall
+    ```shell
+    $ sudo ufw reset
+    $ sudo ufw allow http
+    $ sudo ufw allow out 53 (To avoid Blocking DNS)
+    $ sudo ufw logging on
+    $ sudo ufw default deny incoming
+    $ sudo ufw default deny outgoing
+    $ sudo ufw limit 2200/tcp
+    $ sudo ufw enable
+    ```
+
+
+## Resources
+* [[RESOLVED] UFW Blocking Apt-Get Update](http://www.tudormateescu.com/ufw-blocking-apt-get-update-resolved/)
+* [Linux Server Configuration](https://github.com/AmroYasser/Linux-Server-Configuration)
+* [How to run pyhton flask on apache web server](https://www.youtube.com/watch?v=iVGtJOC71Fw)
+* [How can I kill all my postgresql connections?](https://stackoverflow.com/questions/5108876/kill-a-postgresql-session-connection)
+* [Using PostgreSQL through SQLAlchemy](https://www.compose.com/articles/using-postgresql-through-sqlalchemy/)
